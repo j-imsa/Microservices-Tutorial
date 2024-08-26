@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: IoTDevice
+
+server:
+  port: 8089
