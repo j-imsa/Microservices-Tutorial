@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: IoTProject
+
+server:
+  port: 8088
