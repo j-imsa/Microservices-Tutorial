@@ -2,11 +2,11 @@
 
 ### Challenge 1: Creating a basic microservice
 
-- [ ] Spring Boot
-- [ ] Rest best practices
+- [x] Spring Boot
+- [x] Rest best practices
 - [ ] Hello World!
-- [ ] DB connection
-  - [ ] Local
+- [x] DB connection
+  - [x] Local
   - [ ] Dockerized
 - [ ] Repository
   - [ ] Spring Data JPA
