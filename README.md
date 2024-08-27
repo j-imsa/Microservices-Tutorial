@@ -4,19 +4,31 @@
 
 - [x] Spring Boot
 - [x] Rest best practices
-- [ ] Hello World!
+- [x] Hello World!
 - [x] DB connection
   - [x] Local
-  - [ ] Dockerized
+  - [ ] ~~Dockerized~~
 - [x] Repository
   - [x] Spring Data JPA
-  - [ ] Spring Data Rest
-- [ ] Service
-- [ ] DTO
+  - [ ] ~~Spring Data Rest~~
+- [x] Service
+  - Mapper
+    - Manual
+    - [ModelMapper](https://modelmapper.org/)
+    - [MapStruct](https://mapstruct.org/)
+- [x] DTO
+  - [Data Transfer Object](https://martinfowler.com/eaaCatalog/dataTransferObject.html)
 - [ ] Creat (**C**RUD)
+  - `POST /projects`
 - [ ] Read (C**R**UD)
+  - `GET /projects`
+  - `GET /projects/{pid}`
 - [ ] Update (CR**U**D)
+  - `PUT /projects/{pid}`
+  - `PATCH /projects/{pid}`
 - [ ] Delete (CRU**D**)
+  - `DELETE /projects`
+  - `DELETE /projects/{pid}`
 - [ ] Exceptions
 - [ ] Validation
 - [x] Audit
