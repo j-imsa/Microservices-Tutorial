@@ -20,7 +20,6 @@ public class ProjectEntity extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @JsonProperty("public_id")
     private String publicId;
 
     @Column(nullable = false)

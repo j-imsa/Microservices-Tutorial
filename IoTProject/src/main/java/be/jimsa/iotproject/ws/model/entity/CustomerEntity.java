@@ -20,10 +20,10 @@ public class CustomerEntity extends BaseEntity{
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @JsonProperty("public_id")
     private String publicId;
 
-    @Column(nullable = false)
     private String name;
+    private String email;
+    private String mobileNumber;
 
 }
