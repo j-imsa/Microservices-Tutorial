@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @ToString
+@Builder
 @Entity
 @Table(name = "projects")
 public class ProjectEntity extends BaseEntity {
