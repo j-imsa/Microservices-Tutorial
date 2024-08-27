@@ -1,5 +1,8 @@
 package be.jimsa.iotproject.ws.service.impl;
 
+import be.jimsa.iotproject.config.exception.BadFormatRequestException;
+import be.jimsa.iotproject.config.exception.NullObjectException;
+import be.jimsa.iotproject.config.exception.ResourceAlreadyExistException;
 import be.jimsa.iotproject.utility.constant.ProjectConstants;
 import be.jimsa.iotproject.utility.id.PublicIdGenerator;
 import be.jimsa.iotproject.utility.mapper.ProjectMapper;
@@ -20,22 +23,46 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto createNewProject(ProjectDto projectDto) {
-        // check
-        if (isItValidToCreate(projectDto)) {
-            throw new RuntimeException("BAD Request");
+
+        if (projectDto == null) {
+            throw new NullObjectException(ProjectConstants.EXCEPTION_NULL_MESSAGE + ProjectConstants.PROJECT_NAME);
         }
-        // dto -> publicId
-        projectDto.setPublicId(publicIdGenerator.generatePublicId(ProjectConstants.PUBLIC_ID_LENGTH));
-        // dto -> entity
+        if (!isItValidToCreate(projectDto)) {
+            throw new BadFormatRequestException(ProjectConstants.EXCEPTION_BAD_FORMAT_MESSAGE + ProjectConstants.PROJECT_ITEM_PUBLIC_ID);
+        }
+        if (isItExistIntoDatabase(projectDto)) {
+            throw new ResourceAlreadyExistException(ProjectConstants.EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE +
+                    String.format("{%s:'%s', %s:'%s'}", ProjectConstants.PROJECT_ITEM_NAME, projectDto.getName(),
+                            ProjectConstants.PROJECT_ITEM_TYPE, projectDto.getType())
+            );
+        }
+
+        projectDto.setPublicId(
+                publicIdGenerator.generatePublicId(ProjectConstants.PUBLIC_ID_LENGTH)
+        );
+
         ProjectEntity projectEntity = projectMapper.mapToEntity(projectDto);
-        // entity -> save -> entity
+
         ProjectEntity savedProjectEntity = projectRepository.save(projectEntity);
-        // entity -> dto
-        ProjectDto returnProjectDto = projectMapper.mapToDto(savedProjectEntity);
-        return returnProjectDto;
+
+        return projectMapper.mapToDto(savedProjectEntity);
+    }
+
+    private boolean isItExistIntoDatabase(ProjectDto projectDto) {
+        if (projectDto != null) {
+            return projectRepository
+                    .findByNameAndType(projectDto.getName(), projectDto.getType())
+                    .isPresent();
+        } else {
+            return false;
+        }
     }
 
     public boolean isItValidToCreate(ProjectDto projectDto) {
-        return projectDto.getPublicId() != null;
+        if (projectDto != null) {
+            return projectDto.getPublicId() == null;
+        } else {
+            return false;
+        }
     }
 }
