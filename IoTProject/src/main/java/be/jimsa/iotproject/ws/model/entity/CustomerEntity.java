@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "customers")
-public class CustomerEntity {
+public class CustomerEntity extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

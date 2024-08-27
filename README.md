@@ -8,8 +8,8 @@
 - [x] DB connection
   - [x] Local
   - [ ] Dockerized
-- [ ] Repository
-  - [ ] Spring Data JPA
+- [x] Repository
+  - [x] Spring Data JPA
   - [ ] Spring Data Rest
 - [ ] Service
 - [ ] DTO
@@ -19,7 +19,7 @@
 - [ ] Delete (CRU**D**)
 - [ ] Exceptions
 - [ ] Validation
-- [ ] Audit
+- [x] Audit
 - [ ] Document
 - [ ] Test
   - [ ] Unit Test
