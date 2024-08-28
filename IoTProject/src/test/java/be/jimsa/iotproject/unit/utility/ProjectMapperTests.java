@@ -1,4 +1,4 @@
-package be.jimsa.iotproject.utility;
+package be.jimsa.iotproject.unit.utility;
 
 import be.jimsa.iotproject.utility.mapper.ProjectMapper;
 import be.jimsa.iotproject.ws.model.dto.ProjectDto;

@@ -1,4 +1,4 @@
-package be.jimsa.iotproject.repository;
+package be.jimsa.iotproject.unit.repository;
 
 import be.jimsa.iotproject.ws.model.entity.ProjectEntity;
 import be.jimsa.iotproject.ws.repository.ProjectRepository;

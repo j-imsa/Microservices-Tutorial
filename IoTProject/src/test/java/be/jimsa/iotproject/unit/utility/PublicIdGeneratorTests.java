@@ -1,4 +1,4 @@
-package be.jimsa.iotproject.utility;
+package be.jimsa.iotproject.unit.utility;
 
 import be.jimsa.iotproject.utility.id.PublicIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
