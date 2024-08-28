@@ -18,7 +18,7 @@
     - [MapStruct](https://mapstruct.org/)
 - [x] DTO
   - [Data Transfer Object](https://martinfowler.com/eaaCatalog/dataTransferObject.html)
-- [ ] Creat (**C**RUD)
+- [x] Creat (**C**RUD)
   - `POST /projects`
 - [ ] Read (C**R**UD)
   - `GET /projects`
@@ -29,12 +29,12 @@
 - [ ] Delete (CRU**D**)
   - `DELETE /projects`
   - `DELETE /projects/{pid}`
-- [ ] Exceptions
+- [x] Exceptions
 - [ ] Validation
 - [x] Audit
 - [ ] Document
 - [ ] Test
-  - [ ] Unit Test
+  - [x] Unit Test
   - [ ] Integration Test
   - [ ] End-To-End Testing
 
