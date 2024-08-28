@@ -4,10 +4,9 @@ public class ProjectConstants {
     private ProjectConstants() {
     }
 
-
-
     public static final int PUBLIC_ID_LENGTH = 64;
 
+    public static final String EXCEPTION_REGEX = "%s %s";
     public static final String EXCEPTION_MESSAGE = "message";
     public static final String EXCEPTION_PATH = "path";
     public static final String EXCEPTION_BAD_FORMAT_MESSAGE = "Bad format of: ";

@@ -21,34 +21,39 @@ public class AppExceptionHandler {
 
     @ExceptionHandler(value = {
             BadFormatRequestException.class,
-            ResourceAlreadyExistException.class,
-            InternalServiceException.class
+            ResourceAlreadyExistException.class
     })
-    public ResponseEntity<ResponseDto> handleAppExceptions(RuntimeException ex, HttpServletRequest webRequest) {
+    public ResponseEntity<ResponseDto> handleApp400Exceptions(RuntimeException ex, HttpServletRequest webRequest) {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put(ProjectConstants.EXCEPTION_MESSAGE, ex.getMessage());
-        hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format("%s %s", webRequest.getMethod(), webRequest.getRequestURI()));
-        return ResponseEntity.ok(
-                ResponseDto.builder()
-                        .action(false)
-                        .timestamp(LocalDateTime.now())
-                        .result(hashMap)
-                        .build()
-        );
+        hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format(ProjectConstants.EXCEPTION_REGEX, webRequest.getMethod(), webRequest.getRequestURI()));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ResponseDto.builder()
+                                .action(false)
+                                .timestamp(LocalDateTime.now())
+                                .result(hashMap)
+                                .build()
+                );
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ResponseDto> handleGeneralException(Exception ex, HttpServletRequest webRequest) {
+    @ExceptionHandler(value = {
+            Exception.class,
+            InternalServiceException.class
+    })
+    public ResponseEntity<ResponseDto> handleApp500Exceptions(RuntimeException ex, HttpServletRequest webRequest) {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put(ProjectConstants.EXCEPTION_MESSAGE, ex.getMessage());
-        hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format("%s %s", webRequest.getMethod(), webRequest.getRequestURI()));
+        hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format(ProjectConstants.EXCEPTION_REGEX, webRequest.getMethod(), webRequest.getRequestURI()));
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ResponseDto.builder()
-                        .action(false)
-                        .timestamp(LocalDateTime.now())
-                        .result(hashMap)
-                        .build()
+                .body(
+                        ResponseDto.builder()
+                                .action(false)
+                                .timestamp(LocalDateTime.now())
+                                .result(hashMap)
+                                .build()
                 );
     }
 }
