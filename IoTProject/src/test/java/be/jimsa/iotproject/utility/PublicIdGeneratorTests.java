@@ -24,7 +24,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitAValidData_shouldReturnAValidString")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withAValidData_shouldReturnAValidString")
     void givenAValidLength_whenGeneratePublicId_thenShouldReturnAValidString() {
         int length = 128;
         String result = publicIdGenerator.generatePublicId(length);
@@ -34,7 +34,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitANegativeData_shouldReturnAValidStringWithDefaultLength")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withANegativeData_shouldReturnAValidStringWithDefaultLength")
     void givenANegativeLength_whenGeneratePublicId_thenShouldReturnAValidStringWithDefaultLength() {
         int length = -1024;
         String result = publicIdGenerator.generatePublicId(length);
@@ -44,7 +44,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitABigLength_shouldReturnAValidStringWithDefaultLength")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withABigLength_shouldReturnAValidStringWithDefaultLength")
     void givenABigLength_whenGeneratePublicId_thenShouldReturnAValidStringWithDefaultLength() {
         int length = 1024;
         String result = publicIdGenerator.generatePublicId(length);
@@ -54,7 +54,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitAMinLength_shouldReturnAValidStringWithDefaultLength")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withAMinLength_shouldReturnAValidStringWithDefaultLength")
     void givenAMinLength_whenGeneratePublicId_thenShouldReturnAValidStringWithDefaultLength() {
         int length = MIN;
         String result = publicIdGenerator.generatePublicId(length);
@@ -64,7 +64,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitAMaxLength_shouldReturnAValidStringWithDefaultLength")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withAMaxLength_shouldReturnAValidStringWithDefaultLength")
     void givenAMaxLength_whenGeneratePublicId_thenShouldReturnAValidStringWithDefaultLength() {
         int length = MAX;
         String result = publicIdGenerator.generatePublicId(length);
@@ -74,7 +74,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicIdPublicIdGenerator_whitAValidLengthFor100Times_shouldReturnAValidStringFor100Times")
+    @DisplayName("testGeneratePublicIdPublicIdGenerator_withAValidLengthFor100Times_shouldReturnAValidStringFor100Times")
     void givenMultipleIdsGenerated_whenGeneratePublicId_thenShouldBeUnique() {
         Set<String> generatedIds = new HashSet<>();
         for (int i = 0; i < 1000; i++) {
@@ -84,7 +84,7 @@ class PublicIdGeneratorTests {
     }
 
     @Test
-    @DisplayName("testGeneratePublicId_whitARangeOfLength_shouldReturnAValidStringWithoutNull")
+    @DisplayName("testGeneratePublicId_withARangeOfLength_shouldReturnAValidStringWithoutNull")
     void givenAnyLength_whenGeneratePublicId_thenShouldNeverReturnNull() {
         int[] lengths = {-100, 0, 1, MIN, 128, MAX, 1024};
 
