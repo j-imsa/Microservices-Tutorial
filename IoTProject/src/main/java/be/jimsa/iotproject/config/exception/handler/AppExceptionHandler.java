@@ -1,6 +1,7 @@
 package be.jimsa.iotproject.config.exception.handler;
 
 import be.jimsa.iotproject.config.exception.BadFormatRequestException;
+import be.jimsa.iotproject.config.exception.InternalServiceException;
 import be.jimsa.iotproject.config.exception.ResourceAlreadyExistException;
 import be.jimsa.iotproject.utility.constant.ProjectConstants;
 import be.jimsa.iotproject.ws.model.dto.ResponseDto;
@@ -18,7 +19,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class AppExceptionHandler {
 
-    @ExceptionHandler(value = {BadFormatRequestException.class, ResourceAlreadyExistException.class})
+    @ExceptionHandler(value = {
+            BadFormatRequestException.class,
+            ResourceAlreadyExistException.class,
+            InternalServiceException.class
+    })
     public ResponseEntity<ResponseDto> handleAppExceptions(RuntimeException ex, HttpServletRequest webRequest) {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put(ProjectConstants.EXCEPTION_MESSAGE, ex.getMessage());
