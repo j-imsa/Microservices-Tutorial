@@ -1,6 +1,7 @@
 package be.jimsa.iotproject.ws.service.impl;
 
 import be.jimsa.iotproject.config.exception.BadFormatRequestException;
+import be.jimsa.iotproject.config.exception.InternalServiceException;
 import be.jimsa.iotproject.config.exception.NullObjectException;
 import be.jimsa.iotproject.config.exception.ResourceAlreadyExistException;
 import be.jimsa.iotproject.utility.constant.ProjectConstants;
@@ -12,6 +13,8 @@ import be.jimsa.iotproject.ws.repository.ProjectRepository;
 import be.jimsa.iotproject.ws.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -31,28 +34,27 @@ public class ProjectServiceImpl implements ProjectService {
             throw new BadFormatRequestException(ProjectConstants.EXCEPTION_BAD_FORMAT_MESSAGE + ProjectConstants.PROJECT_ITEM_PUBLIC_ID);
         }
         if (isItExistIntoDatabase(projectDto)) {
-            throw new ResourceAlreadyExistException(ProjectConstants.EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE +
-                    String.format("{%s:'%s', %s:'%s'}", ProjectConstants.PROJECT_ITEM_NAME, projectDto.getName(),
-                            ProjectConstants.PROJECT_ITEM_TYPE, projectDto.getType())
-            );
+            throw new ResourceAlreadyExistException(ProjectConstants.EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE + String.format("{%s:'%s', %s:'%s'}", ProjectConstants.PROJECT_ITEM_NAME, projectDto.getName(), ProjectConstants.PROJECT_ITEM_TYPE, projectDto.getType()));
         }
 
-        projectDto.setPublicId(
-                publicIdGenerator.generatePublicId(ProjectConstants.PUBLIC_ID_LENGTH)
-        );
-
-        ProjectEntity projectEntity = projectMapper.mapToEntity(projectDto);
-
-        ProjectEntity savedProjectEntity = projectRepository.save(projectEntity);
-
-        return projectMapper.mapToDto(savedProjectEntity);
+        projectDto.setPublicId(publicIdGenerator.generatePublicId(ProjectConstants.PUBLIC_ID_LENGTH));
+        Optional<ProjectEntity> projectEntityOptional = projectMapper.mapToEntity(projectDto);
+        return projectEntityOptional
+                .map(projectEntity -> {
+                    ProjectEntity savedProjectEntity = projectRepository.save(projectEntity);
+                    Optional<ProjectDto> projectDtoOptional = projectMapper.mapToDto(savedProjectEntity);
+                    return projectDtoOptional
+                            .orElseThrow(() -> {
+                                projectRepository.delete(savedProjectEntity);
+                                return new InternalServiceException(ProjectConstants.EXCEPTION_INTERNAL_SERVICE_MESSAGE + ProjectConstants.PROJECT_CAST);
+                            });
+                })
+                .orElseThrow(() -> new InternalServiceException(ProjectConstants.EXCEPTION_INTERNAL_SERVICE_MESSAGE + ProjectConstants.PROJECT_CAST));
     }
 
-    private boolean isItExistIntoDatabase(ProjectDto projectDto) {
+    public boolean isItExistIntoDatabase(ProjectDto projectDto) {
         if (projectDto != null) {
-            return projectRepository
-                    .findByNameAndType(projectDto.getName(), projectDto.getType())
-                    .isPresent();
+            return projectRepository.findByNameAndType(projectDto.getName(), projectDto.getType()).isPresent();
         } else {
             return false;
         }
