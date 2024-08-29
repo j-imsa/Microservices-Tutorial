@@ -2,6 +2,7 @@ package be.jimsa.iotproject.config.exception.handler;
 
 import be.jimsa.iotproject.config.exception.BadFormatRequestException;
 import be.jimsa.iotproject.config.exception.InternalServiceException;
+import be.jimsa.iotproject.config.exception.NullObjectException;
 import be.jimsa.iotproject.config.exception.ResourceAlreadyExistException;
 import be.jimsa.iotproject.utility.constant.ProjectConstants;
 import be.jimsa.iotproject.ws.model.dto.ResponseDto;
@@ -23,7 +24,7 @@ public class AppExceptionHandler {
             BadFormatRequestException.class,
             ResourceAlreadyExistException.class
     })
-    public ResponseEntity<ResponseDto> handleApp400Exceptions(RuntimeException ex, HttpServletRequest webRequest) {
+    public ResponseEntity<ResponseDto> handleApp4xxExceptions(RuntimeException ex, HttpServletRequest webRequest) {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put(ProjectConstants.EXCEPTION_MESSAGE, ex.getMessage());
         hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format(ProjectConstants.EXCEPTION_REGEX, webRequest.getMethod(), webRequest.getRequestURI()));
@@ -40,9 +41,10 @@ public class AppExceptionHandler {
 
     @ExceptionHandler(value = {
             Exception.class,
+            NullObjectException.class,
             InternalServiceException.class
     })
-    public ResponseEntity<ResponseDto> handleApp500Exceptions(RuntimeException ex, HttpServletRequest webRequest) {
+    public ResponseEntity<ResponseDto> handleApp5xxExceptions(Exception ex, HttpServletRequest webRequest) {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put(ProjectConstants.EXCEPTION_MESSAGE, ex.getMessage());
         hashMap.put(ProjectConstants.EXCEPTION_PATH, String.format(ProjectConstants.EXCEPTION_REGEX, webRequest.getMethod(), webRequest.getRequestURI()));
