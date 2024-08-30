@@ -1,6 +1,19 @@
 spring:
   application:
     name: IoTDevice
+  datasource:
+    url: jdbc:h2:mem:devicedb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: pass@123
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 server:
   port: 8089
