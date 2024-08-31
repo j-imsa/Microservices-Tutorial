@@ -33,6 +33,9 @@
 - [ ] Validation
 - [x] Audit
 - [ ] Document
+- [x] Annotation
+  - [x] [Lombok](https://projectlombok.org/)
+  - [ ] [Vavr](https://vavr.io/)
 - [ ] Test
   - [x] Unit Test
   - [ ] Integration Test
