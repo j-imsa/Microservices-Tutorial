@@ -3,7 +3,6 @@ package be.jimsa.iotproject.ws.controller;
 import be.jimsa.iotproject.ws.model.dto.ProjectDto;
 import be.jimsa.iotproject.ws.model.dto.ResponseDto;
 import be.jimsa.iotproject.ws.service.ProjectService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
