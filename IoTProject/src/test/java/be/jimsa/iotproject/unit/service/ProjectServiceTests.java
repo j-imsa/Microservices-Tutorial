@@ -55,12 +55,12 @@ class ProjectServiceTests {
     }
 
     @Nested
-    @DisplayName("test for IsItValidToCreateProject")
+    @DisplayName("IsItValidToCreateProject")
     class IsItValidToCreateProjectTests {
         @Test
-        @DisplayName("testIsItValidToCreateProject_withValidObject_shouldReturnTrue")
+        @DisplayName("by a valid dto, without public_id, should return true")
         @Order(1)
-        void givenAValidObject_whenIsItValidToCreate_thenReturnTrue() {
+        void givenAValidDto_whenIsItValidToCreate_thenReturnTrue() {
             ProjectDto projectDto = ProjectDto.builder().name(projectName).type(projectType).build();
 
             boolean result = projectServiceImpl.isItValidToCreate(projectDto);
@@ -69,9 +69,9 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testIsItValidToCreateProject_withoutValidObject_shouldReturnFalse")
+        @DisplayName("by an invalid dto, with public_id, should return false")
         @Order(2)
-        void givenAWrongObject_whenIsItValidToCreate_thenReturnFalse() {
+        void givenAnInvalidDtoWithPublicId_whenIsItValidToCreate_thenReturnFalse() {
             ProjectDto projectDto = ProjectDto.builder().publicId(projectPublicId).name(projectName).type(projectType).build();
 
             boolean result = projectServiceImpl.isItValidToCreate(projectDto);
@@ -80,7 +80,7 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testIsItValidToCreateProject_withNullObject_shouldReturnFalse")
+        @DisplayName("by null object, should return false")
         @Order(3)
         void givenANullObject_whenIsItValidToCreate_thenReturnFalse() {
             ProjectDto projectDto = null;
@@ -92,11 +92,11 @@ class ProjectServiceTests {
     }
 
     @Nested
-    @DisplayName("test for IsItExistIntoDatabase")
+    @DisplayName("IsItExistIntoDatabase")
     class IsItExistIntoDatabaseTests {
 
         @Test
-        @DisplayName("testIsItExistIntoDatabaseProjectServiceImpl_withAValidDto_shouldReturnTrue")
+        @DisplayName("by a valid dto, not exist in db, should return true")
         void givenAValidDto_whenIsItExistIntoDatabase_thenReturnTrue() {
             // given - precondition or setup:
             ProjectDto projectDto = ProjectDto.builder().publicId(projectPublicId).name(projectName).type(projectType).build();
@@ -111,16 +111,16 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testIsItExistIntoDatabaseProjectServiceImpl_withANullDto_shouldReturnFalse")
-        void givenANullDto_whenIsItExistIntoDatabase_thenReturnFalse() {
+        @DisplayName("by a null object, should return false")
+        void givenANullObject_whenIsItExistIntoDatabase_thenReturnFalse() {
             ProjectDto projectDto = null;
             boolean result = projectServiceImpl.isItExistIntoDatabase(projectDto);
             assertThat(result).isFalse();
         }
 
         @Test
-        @DisplayName("testIsItExistIntoDatabaseProjectServiceImpl_withAValidDtoAndEmptyResult_shouldReturnFalse")
-        void givenAValidDtoAndEmptyResult_whenIsItExistIntoDatabase_thenReturnFalse() {
+        @DisplayName("by a valid dto, with does not exist name and type, should return false")
+        void givenAValidDtoAndDoesNotExistNameType_whenIsItExistIntoDatabase_thenReturnFalse() {
             ProjectDto projectDto = ProjectDto.builder().publicId(projectPublicId).name(projectName).type(projectType).build();
             given(projectRepository.findByNameAndType(anyString(), anyString())).willReturn(Optional.empty());
 
@@ -131,15 +131,29 @@ class ProjectServiceTests {
             assertThat(result).isFalse();
         }
 
+        @Test
+        @DisplayName("by a valid dto, with exist name and type, should return true")
+        void givenAValidDtoAndExistNameType_whenIsItExistIntoDatabase_thenReturnTrue() {
+            ProjectDto projectDto = ProjectDto.builder().publicId(projectPublicId).name(projectName).type(projectType).build();
+            given(projectRepository.findByNameAndType(anyString(), anyString()))
+                    .willReturn(Optional.of(ProjectEntity.builder().build()));
+
+            // when - action or the behaviour that we are going test:
+            boolean result = projectServiceImpl.isItExistIntoDatabase(projectDto);
+
+            // then - verify the output:
+            assertThat(result).isTrue();
+        }
+
     }
 
     @Nested
-    @DisplayName("test for CreateNewProject")
+    @DisplayName("CreateNewProject")
     class CreateNewProjectTests {
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withAValidObject_shouldReturnProjectDto")
-        void givenAValidObject_whenCreateNewProject_thenReturnSavedProjectDto() {
+        @DisplayName("by a valid project-dto, should return saved project-dto")
+        void givenAValidProjectDto_whenCreateNewProject_thenReturnSavedProjectDto() {
             ProjectDto inputProjectDto = ProjectDto.builder()
                     .name(projectName)
                     .type(projectType)
@@ -187,8 +201,8 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withANull_shouldThrowNullObjectException")
-        void givenANull_whenCreateNewProject_thenThrowNullObjectException() {
+        @DisplayName("by a null object, should throw NullObjectException")
+        void givenANullObject_whenCreateNewProject_thenThrowNullObjectException() {
             ProjectDto inputProjectDto = null;
             assertThatThrownBy(() -> projectServiceImpl.createNewProject(inputProjectDto))
                     .isInstanceOf(NullObjectException.class)
@@ -196,8 +210,8 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withAPublicId_shouldThrowBadFormatRequestException")
-        void givenAPublicId_whenCreateNewProject_thenThrowBadFormatRequestException() {
+        @DisplayName("by a project-dto which has public_id, should throw BadFormatRequestException")
+        void givenAnInvalidProjectDtoWithPublicId_whenCreateNewProject_thenThrowBadFormatRequestException() {
             ProjectDto projectDto = ProjectDto.builder()
                     .publicId(projectPublicId)
                     .name(projectName)
@@ -209,8 +223,8 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withAnExistObject_shouldThrowResourceAlreadyExistException")
-        void givenAnExistObject_whenCreateNewProject_thenThrowResourceAlreadyExistException() {
+        @DisplayName("by an exist entity, should throw ResourceAlreadyExistException")
+        void givenAnExistProjectEntity_whenCreateNewProject_thenThrowResourceAlreadyExistException() {
             ProjectDto projectDto = ProjectDto.builder()
                     .name(projectName)
                     .type(projectType)
@@ -229,7 +243,7 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withMapToEntityReturnsEmpty_shouldThrowInternalServiceException")
+        @DisplayName("can not cast dto-to-entity, should throw InternalServiceException")
         void givenMapToEntityReturnsEmpty_whenCreateNewProject_thenThrowInternalServiceException() {
             ProjectDto projectDto = ProjectDto.builder()
                     .name(projectName)
@@ -244,7 +258,7 @@ class ProjectServiceTests {
         }
 
         @Test
-        @DisplayName("testCreateNewProjectProject_withMapToDtoReturnsEmpty_shouldThrowInternalServiceException")
+        @DisplayName("can not cast entity-to-dto, should throw InternalServiceException")
         void givenMapToDtoReturnsEmpty_whenCreateNewProject_thenThrowInternalServiceException() {
             ProjectDto projectDto = ProjectDto.builder()
                     .name(projectName)
@@ -268,6 +282,21 @@ class ProjectServiceTests {
             verify(projectRepository, times(1)).delete(any(ProjectEntity.class));
         }
 
+    }
+
+    @Nested
+    @DisplayName("FindAllProjects")
+    class FindAllProjectsTests {
+        @Test
+        @DisplayName("")
+        void given_when_then() {
+            // given - precondition or setup:
+
+            // when - action or the behaviour that we are going test:
+
+            // then - verify the output:
+
+        }
     }
 
 }
