@@ -14,6 +14,7 @@ import be.jimsa.iotproject.ws.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -50,6 +51,36 @@ public class ProjectServiceImpl implements ProjectService {
                             });
                 })
                 .orElseThrow(() -> new InternalServiceException(ProjectConstants.EXCEPTION_INTERNAL_SERVICE_MESSAGE + ProjectConstants.PROJECT_CAST));
+    }
+
+    @Override
+    public List<ProjectDto> findAllProjects() {
+        return List.of();
+    }
+
+    @Override
+    public ProjectDto findAProject(String publicId) {
+        return null;
+    }
+
+    @Override
+    public ProjectDto updateAProject(String publicId, ProjectDto newProjectDto) {
+        return null;
+    }
+
+    @Override
+    public ProjectDto patchAProject(String publicId, ProjectDto newProjectDto) {
+        return null;
+    }
+
+    @Override
+    public boolean removeAProject(String publicId) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAllProjects() {
+        return false;
     }
 
     public boolean isItExistIntoDatabase(ProjectDto projectDto) {
