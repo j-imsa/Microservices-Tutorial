@@ -20,6 +20,7 @@ public class ProjectConstants {
     public static final String EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE = "The resource already exists!";
     public static final String EXCEPTION_NULL_MESSAGE = "null!";
     public static final String EXCEPTION_INTERNAL_SERVICE_MESSAGE = "Internal service error!";
+    public static final String EXCEPTION_NOT_FOUND_RESOURCE_MESSAGE = "The resource with provided public_id not founded!";
 
     public static final String VALIDATION_PAGE_POSITIVE_INTEGER = "page must be a positive number";
     public static final String VALIDATION_PAGE_DEFAULT_VALUE = "1";
