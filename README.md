@@ -3,10 +3,12 @@
 ### Challenge 1: Creating a basic microservice
 
 - [x] Spring Boot
-- [x] Rest best practices
-- [x] Hello World!
+- [x] Restful best practices
 - [x] DB connection
-  - [x] Local
+  - [x] Local - in-memory like H2 
+  - [ ] Local  
+    - [ ] SQL-based: MySQL, PostgreSQL, ...
+    - [ ] NoSQL-based: Redis, MongoDB, ...
   - [ ] ~~Dockerized~~
 - [x] Repository
   - [x] Spring Data JPA
@@ -20,17 +22,17 @@
   - [Data Transfer Object](https://martinfowler.com/eaaCatalog/dataTransferObject.html)
 - [x] Creat (**C**RUD)
   - `POST /projects`
-- [ ] Read (C**R**UD)
+- [x] Read (C**R**UD)
   - `GET /projects`
   - `GET /projects/{pid}`
-- [ ] Update (CR**U**D)
+- [x] Update (CR**U**D)
   - `PUT /projects/{pid}`
   - `PATCH /projects/{pid}`
-- [ ] Delete (CRU**D**)
+- [x] Delete (CRU**D**)
   - `DELETE /projects`
   - `DELETE /projects/{pid}`
 - [x] Exceptions
-- [ ] Validation
+- [x] Validation
 - [x] Audit
 - [ ] Document
 - [x] Annotation
