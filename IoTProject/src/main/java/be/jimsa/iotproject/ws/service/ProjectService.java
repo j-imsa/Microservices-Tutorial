@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProjectService {
     ProjectDto createNewProject(ProjectDto projectDto);
 
-    List<ProjectDto> findAllProjects();
+    List<ProjectDto> findAllProjects(int page, int size, String sortField, String sortDirection);
 
     ProjectDto findAProject(String publicId);
 
