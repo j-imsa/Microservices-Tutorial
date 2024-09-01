@@ -10,7 +10,7 @@
     </parent>
     <groupId>be.jimsa</groupId>
     <artifactId>IoTProject</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.9</version>
     <name>IoTProject</name>
     <description>IoTProject</description>
     <url/>
@@ -72,6 +72,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
         </dependency>
 
     </dependencies>

@@ -34,7 +34,7 @@
 - [x] Exceptions
 - [x] Validation
 - [x] Audit
-- [ ] Document
+- [x] Document
 - [x] Annotation
   - [x] [Lombok](https://projectlombok.org/)
   - [ ] [Vavr](https://vavr.io/)
