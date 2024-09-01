@@ -1,5 +1,6 @@
 package be.jimsa.iotproject.ws.model.dto;
 
+import be.jimsa.iotproject.config.validation.annotation.ValidPublicId;
 import be.jimsa.iotproject.utility.constant.ProjectConstants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
@@ -21,19 +22,14 @@ public class ProjectDto {
 
     public interface PutUpdate {
     }
+
     public interface PatchUpdate {
     }
 
     @JsonProperty(VALIDATION_PUBLIC_ID)
     @NotEmpty(message = VALIDATION_PUBLIC_ID_NOT_EMPTY_MESSAGE, groups = Read.class)
     @NotBlank(message = VALIDATION_PUBLIC_ID_NOT_BLANK_MESSAGE, groups = Read.class)
-    @Size(min = VALIDATION_PUBLIC_ID_MIN,
-            max = VALIDATION_PUBLIC_ID_MAX,
-            message = VALIDATION_PUBLIC_ID_SIZE_MESSAGE,
-            groups = Read.class)
-    @Pattern(regexp = VALIDATION_PUBLIC_ID_PATTERN,
-            message = VALIDATION_PUBLIC_ID_PATTERN_MESSAGE,
-            groups = Read.class)
+    @ValidPublicId(groups = Read.class)
     @Null(message = VALIDATION_PUBLIC_ID_NULL_MESSAGE,
             groups = {Create.class, PutUpdate.class, PatchUpdate.class})
     private String publicId;
