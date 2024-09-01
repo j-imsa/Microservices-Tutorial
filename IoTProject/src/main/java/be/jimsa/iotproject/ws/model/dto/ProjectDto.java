@@ -40,7 +40,7 @@ public class ProjectDto {
 
     @NotEmpty(message = VALIDATION_NAME_NOT_EMPTY_MESSAGE, groups = {Read.class, Create.class, PutUpdate.class})
     @NotBlank(message = VALIDATION_NAME_NOT_BLANK_MESSAGE, groups = {Read.class, Create.class, PutUpdate.class})
-    @Size(min = VALIDATION_NAME_MIN, max = VALIDATION_NAME_MAX, message = VALIDATION_NAME_SIZE_MESSAGE,
+    @Size(min = VALIDATION_NAME_MIN_LENGTH, max = VALIDATION_NAME_MAX_LENGTH, message = VALIDATION_NAME_SIZE_MESSAGE,
             groups = {Read.class, Create.class, PutUpdate.class})
     @Pattern(regexp = VALIDATION_NAME_PATTERN, message = VALIDATION_NAME_SIZE_MESSAGE,
             groups = PatchUpdate.class)
@@ -48,7 +48,7 @@ public class ProjectDto {
 
     @NotEmpty(message = VALIDATION_TYPE_NOT_EMPTY_MESSAGE, groups = {Read.class, Create.class, PutUpdate.class})
     @NotBlank(message = VALIDATION_TYPE_NOT_BLANK_MESSAGE, groups = {Read.class, Create.class, PutUpdate.class})
-    @Size(min = VALIDATION_TYPE_MIN, max = VALIDATION_TYPE_MAX, message = VALIDATION_TYPE_SIZE_MESSAGE,
+    @Size(min = VALIDATION_TYPE_MIN_LENGTH, max = VALIDATION_TYPE_MAX_LENGTH, message = VALIDATION_TYPE_SIZE_MESSAGE,
             groups = {Read.class, Create.class, PutUpdate.class})
     @Pattern(regexp = VALIDATION_TYPE_PATTERN, message = VALIDATION_TYPE_SIZE_MESSAGE,
             groups = PatchUpdate.class)

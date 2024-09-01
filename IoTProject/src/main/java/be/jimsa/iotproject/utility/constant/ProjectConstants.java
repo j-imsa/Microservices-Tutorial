@@ -1,27 +1,25 @@
 package be.jimsa.iotproject.utility.constant;
 
+import java.util.Random;
+
 public class ProjectConstants {
 
     private ProjectConstants() {
     }
 
-
-
-    public static final int PUBLIC_ID_LENGTH = 64;
+    public static final String PUBLIC_ID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    public static final Random PUBLIC_ID_RANDOM = new Random();
+    public static final int PUBLIC_ID_MIN_LENGTH = 32;
+    public static final int PUBLIC_ID_MAX_LENGTH = 512;
+    public static final int PUBLIC_ID_DEFAULT_LENGTH = 64;
 
     public static final String EXCEPTION_REGEX = "%s %s";
     public static final String EXCEPTION_MESSAGE = "message";
     public static final String EXCEPTION_PATH = "path";
-    public static final String EXCEPTION_BAD_FORMAT_MESSAGE = "Bad format of: ";
-    public static final String EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE = "The resource already exists: ";
-    public static final String EXCEPTION_NULL_MESSAGE = "null: ";
-    public static final String EXCEPTION_INTERNAL_SERVICE_MESSAGE = "Internal service error: ";
-
-    public static final String PROJECT_ITEM_NAME = "name";
-    public static final String PROJECT_ITEM_TYPE = "type";
-    public static final String PROJECT_ITEM_PUBLIC_ID = "public_id";
-    public static final String PROJECT_NAME = "project";
-    public static final String PROJECT_CAST = "casting";
+    public static final String EXCEPTION_BAD_FORMAT_MESSAGE = "Bad format!";
+    public static final String EXCEPTION_RESOURCE_ALREADY_EXIST_MESSAGE = "The resource already exists!";
+    public static final String EXCEPTION_NULL_MESSAGE = "null!";
+    public static final String EXCEPTION_INTERNAL_SERVICE_MESSAGE = "Internal service error!";
 
     public static final String VALIDATION_PAGE_POSITIVE_INTEGER = "page must be a positive number";
     public static final String VALIDATION_PAGE_DEFAULT_VALUE = "1";
@@ -29,13 +27,13 @@ public class ProjectConstants {
     public static final String VALIDATION_SIZE_DEFAULT_VALUE = "10";
 
     public static final String VALIDATION_SORT_FIELD = "sort_field";
-    public static final String VALIDATION_SORT_FIELD_PATTERN_MESSAGE = "sort field must be 'name' or 'type'";
     public static final String VALIDATION_SORT_FIELD_PATTERN = "name|type";
+    public static final String VALIDATION_SORT_FIELD_PATTERN_MESSAGE = "sort field must be 'name' or 'type'";
     public static final String VALIDATION_SORT_FIELD_DEFAULT_VALUE = "name";
 
     public static final String VALIDATION_SORT_DIRECTION = "sort_direction";
-    public static final String VALIDATION_SORT_DIRECTION_PATTERN_MESSAGE = "sort direction must be 'asc' or 'desc'";
     public static final String VALIDATION_SORT_DIRECTION_PATTERN = "asc|desc";
+    public static final String VALIDATION_SORT_DIRECTION_PATTERN_MESSAGE = "sort direction must be 'asc' or 'desc'";
     public static final String VALIDATION_SORT_DIRECTION_DEFAULT_VALUE = "asc";
 
     public static final String VALIDATION_PUBLIC_ID = "public_id";
@@ -52,15 +50,15 @@ public class ProjectConstants {
     public static final String VALIDATION_NAME_NOT_EMPTY_MESSAGE = "name can not be empty";
     public static final String VALIDATION_NAME_NOT_BLANK_MESSAGE = "name can not be blank";
     public static final String VALIDATION_NAME_SIZE_MESSAGE = "name's length must be between 4 and 50 characters";
-    public static final int VALIDATION_NAME_MIN = 4;
-    public static final int VALIDATION_NAME_MAX = 50;
+    public static final int VALIDATION_NAME_MIN_LENGTH = 4;
+    public static final int VALIDATION_NAME_MAX_LENGTH = 50;
 
     public static final String VALIDATION_TYPE_PATTERN = "^(?!\\s*$)(?=.{4,100}$).*$";
     public static final String VALIDATION_TYPE_NOT_EMPTY_MESSAGE = "type can not be empty";
     public static final String VALIDATION_TYPE_NOT_BLANK_MESSAGE = "type can not be blank";
     public static final String VALIDATION_TYPE_SIZE_MESSAGE = "type's length must be between 4 and 100 characters";
-    public static final int VALIDATION_TYPE_MIN = 4;
-    public static final int VALIDATION_TYPE_MAX = 100;
+    public static final int VALIDATION_TYPE_MIN_LENGTH = 4;
+    public static final int VALIDATION_TYPE_MAX_LENGTH = 100;
 
 
 }
