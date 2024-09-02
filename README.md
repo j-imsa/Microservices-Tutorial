@@ -35,6 +35,10 @@
 - [x] Validation
 - [x] Audit
 - [x] Document
+- [x] Logger
+  - [x] Aspect
+    - [x] @annotation
+    - [ ] execution
 - [x] Annotation
   - [x] [Lombok](https://projectlombok.org/)
   - [ ] [Vavr](https://vavr.io/)
