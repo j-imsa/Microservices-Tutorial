@@ -3,6 +3,7 @@ package be.jimsa.iotproject.ws.service.impl;
 import be.jimsa.iotproject.config.exception.InternalServiceException;
 import be.jimsa.iotproject.config.exception.NotFoundResourceException;
 import be.jimsa.iotproject.config.exception.ResourceAlreadyExistException;
+import be.jimsa.iotproject.config.log.EvaluateExecuteTimeout;
 import be.jimsa.iotproject.utility.id.PublicIdGenerator;
 import be.jimsa.iotproject.utility.mapper.ProjectMapper;
 import be.jimsa.iotproject.ws.model.dto.ProjectDto;
@@ -32,6 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final PublicIdGenerator publicIdGenerator;
 
 
+    @EvaluateExecuteTimeout
     @Override
     public ProjectDto createNewProject(ProjectDto projectDto) {
         Optional<ProjectEntity> projectEntityOptional = projectRepository.findByNameAndType(projectDto.getName(), projectDto.getType());
@@ -44,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.mapToDto(projectEntity);
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public List<ProjectDto> findAllProjects(int page, int size, String sortField, String sortDirection) {
         Sort sort;
@@ -78,6 +81,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .toList();
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public ProjectDto findAProject(String publicId) {
         Optional<ProjectEntity> projectEntityOptional = projectRepository.findByPublicId(publicId);
@@ -88,6 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public ProjectDto updateAProject(String publicId, ProjectDto newProjectDto) {
         int countOfRowEffected = projectRepository.updateProjectEntity(
@@ -105,6 +110,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public ProjectDto patchAProject(String publicId, ProjectDto newProjectDto) {
         Optional<ProjectEntity> projectEntityOptional = projectRepository.findByPublicId(publicId);
@@ -123,6 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public boolean removeAProject(String publicId) {
         Optional<ProjectEntity> projectEntityOptional = projectRepository.findByPublicId(publicId);
@@ -134,6 +141,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @EvaluateExecuteTimeout
     @Override
     public boolean removeAllProjects() {
         projectRepository.deleteAll();

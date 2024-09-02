@@ -7,6 +7,9 @@ public class ProjectConstants {
     private ProjectConstants() {
     }
 
+    public static final long LOG_DEFAULT_TIMEOUT = 15;
+    public static final String LOG_PATTERN = "Executed {} in {} ms";
+
     public static final String PUBLIC_ID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
     public static final Random PUBLIC_ID_RANDOM = new Random();
     public static final int PUBLIC_ID_MIN_LENGTH = 32;
