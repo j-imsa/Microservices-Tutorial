@@ -23,4 +23,6 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /docs-ui
-#    operations-sorter: method
+    operations-sorter: method
+#    tags-sorter: alpha
+#  writer-with-order-by-keys: true
