@@ -2,7 +2,6 @@ package be.jimsa.iotproject.utility.id;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,6 +10,15 @@ import static be.jimsa.iotproject.utility.constant.ProjectConstants.*;
 @Component
 public class PublicIdGenerator {
 
+    /**
+     * I need the guarantee of uniqueness of the generated identifiers. So this point of the app in the next steps should have a fundamental change. Maybe one of the following ways will answer the task:
+     * - Distributed ID Generator
+     * - UUID (Universally Unique Identifier)
+     * - NanoID
+     * - Twitter Snowflake
+     * - ULID
+     * - ...
+     */
     public String generatePublicId(int length) {
         if (length < PUBLIC_ID_MIN_LENGTH || length > PUBLIC_ID_MAX_LENGTH) {
             length = PUBLIC_ID_DEFAULT_LENGTH;
