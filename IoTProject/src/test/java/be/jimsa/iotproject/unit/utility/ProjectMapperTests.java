@@ -8,8 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -111,6 +109,86 @@ class ProjectMapperTests {
         }
     }
 
+    @Nested
+    @DisplayName("MapToDto")
+    class MapToDtoTests {
 
+        @Test
+        @DisplayName("by a valid entity, should return a valid dto")
+        void givenAValidEntity_whenMapToDto_thenReturnAValidDto() {
+            // given(Arrange) - precondition or setup:
+            ProjectEntity input = ProjectEntity.builder()
+                    .publicId(projectId)
+                    .name(projectName)
+                    .type(projectType)
+                    .build();
+
+            // when(Act) - action or the behaviour that we are going test:
+            ProjectDto result = projectMapper.mapToDto(input);
+
+            // then(Assert) - verify the output:
+            assertThat(result)
+                    .isNotNull()
+                    .isInstanceOf(ProjectDto.class)
+                    .hasFieldOrPropertyWithValue("publicId", projectId)
+                    .hasFieldOrPropertyWithValue("name", projectName)
+                    .hasFieldOrPropertyWithValue("type", projectType);
+        }
+
+        @Test
+        @DisplayName("by a valid entity with null values, should return a valid dto with null values")
+        void givenAValidEntityWithNullValues_whenMapToDto_thenReturnAValidDtoWithNullValues() {
+            // given(Arrange) - precondition or setup:
+            ProjectEntity input = ProjectEntity.builder()
+                    .publicId(null)
+                    .name(null)
+                    .type(null)
+                    .build();
+
+            // when(Act) - action or the behaviour that we are going test:
+            ProjectDto result = projectMapper.mapToDto(input);
+
+            // then(Assert) - verify the output:
+            assertThat(result)
+                    .isNotNull()
+                    .isInstanceOf(ProjectDto.class)
+                    .hasFieldOrPropertyWithValue("publicId", null)
+                    .hasFieldOrPropertyWithValue("name", null)
+                    .hasFieldOrPropertyWithValue("type", null);
+        }
+
+        @Test
+        @DisplayName("by a valid entity with especial characters, should not change anythings and return a valid dto")
+        void givenAValidEntityWithEspecialCharacters_whenMapToDto_thenReturnAValidDtoWithEspecialCharacters() {
+            // given(Arrange) - precondition or setup:
+            String name = "نام پروژه به همراه @#$%^&*()_+-=[]{}`~<>?/:;\"',.|\\£€¥₩§©®™✓\n";
+            String type = "تایپ پروژه به همراه ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿×÷ßØÞþÆæÐð€ŒœŸŸ\n";
+            ProjectEntity input = ProjectEntity.builder()
+                    .publicId(projectId)
+                    .name(name)
+                    .type(type)
+                    .build();
+
+            // when(Act) - action or the behaviour that we are going test:
+            ProjectDto result = projectMapper.mapToDto(input);
+
+            // then(Assert) - verify the output:
+            assertThat(result)
+                    .isNotNull()
+                    .isInstanceOf(ProjectDto.class)
+                    .hasFieldOrPropertyWithValue("publicId", projectId)
+                    .hasFieldOrPropertyWithValue("name", name)
+                    .hasFieldOrPropertyWithValue("type", type);
+        }
+
+        @Test
+        @DisplayName("by a null entity, should throw NullPointerException")
+        void givenANullEntity_whenMapToDto_thenNullPointerException() {
+            assertThatThrownBy(() -> projectMapper.mapToDto(null))
+                    .isInstanceOf(NullPointerException.class)
+                    .hasMessageContaining("null");
+        }
+
+    }
 
 }
