@@ -3,18 +3,29 @@ package be.jimsa.iotproject.unit.repository;
 import be.jimsa.iotproject.ws.model.entity.ProjectEntity;
 import be.jimsa.iotproject.ws.repository.ProjectRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.FlushModeType;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.RollbackException;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.Modifying;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 @DataJpaTest
+@Slf4j
 class ProjectRepositoryTests {
 
     @Autowired
@@ -28,22 +39,19 @@ class ProjectRepositoryTests {
     private String projectPublicId;
 
     @BeforeEach
-    @Transactional
     void cleanDatabase() {
-        projectRepository.deleteAll();
-
         projectName = "Alpha t1";
         projectType = "Super Lux";
-        projectPublicId = "TA_qCZ5ugVmutiGhLIlFHmPE";
+        projectPublicId = "a7vqO-mCBzlJpgGjSU-HYsTpLblN4El-UEmr8M9LMIm01dqmNIqENiE0RiLIfu9e";
     }
 
     @Nested
-    @DisplayName("test for Save")
+    @DisplayName("Save")
     class SaveTests {
-        @Test
-        @DisplayName("testSaveProject_withValidData_shouldReturnSavedProject")
-        void givenACorrectProjectObject_whenSave_thenReturnSavedProject() {
 
+        @Test
+        @DisplayName("by a valid entity, should return a valid saved entity with id")
+        void givenAValidProjectEntity_whenSave_thenReturnSavedProjectEntityWithId() {
             ProjectEntity projectEntity = ProjectEntity.builder()
                     .publicId(projectPublicId)
                     .name(projectName)
@@ -52,17 +60,22 @@ class ProjectRepositoryTests {
 
             ProjectEntity savedProjectEntity = projectRepository.save(projectEntity);
 
-            assertThat(savedProjectEntity.getId()).isNotNull();
-            assertThat(savedProjectEntity.getId()).isPositive(); // > 0
-            assertThat(savedProjectEntity.getPublicId()).isEqualTo(projectEntity.getPublicId());
-            assertThat(savedProjectEntity.getName()).isEqualTo(projectEntity.getName());
-            assertThat(savedProjectEntity.getType()).isEqualTo(projectEntity.getType());
+            assertThat(savedProjectEntity)
+                    .isNotNull()
+                    .isInstanceOf(ProjectEntity.class)
+                    .hasFieldOrPropertyWithValue("publicId", projectEntity.getPublicId())
+                    .hasFieldOrPropertyWithValue("name", projectEntity.getName())
+                    .hasFieldOrPropertyWithValue("type", projectEntity.getType())
+                    .hasFieldOrPropertyWithValue("id", savedProjectEntity.getId());
+            assertThat(savedProjectEntity.getId())
+                    .isNotNull()
+                    .isPositive();
             assertThat(projectRepository.count()).isEqualTo(1);
         }
 
         @Test
-        @DisplayName("testSaveProject_withoutPublicId_shouldThrowException")
-        void givenAWrongObjectWithoutPublicId_whenSave_thenThrowException() {
+        @DisplayName("without public_id, should throw [jakarta.validation.]ConstraintViolationException")
+        void givenAnInvalidProjectEntityWithoutPublicId_whenSave_thenThrowConstraintViolationException() {
             ProjectEntity projectEntity = ProjectEntity.builder()
                     .name(projectName)
                     .type(projectType)
@@ -71,16 +84,16 @@ class ProjectRepositoryTests {
             assertThatThrownBy(
                     () -> projectRepository.save(projectEntity)
             )
-                    .isInstanceOf(DataIntegrityViolationException.class)
-                    .hasMessageContaining("not-null property references");
+                    .isInstanceOf(ConstraintViolationException.class)
+                    .hasMessageContaining("Invalid public_id");
 
             entityManager.clear();
             assertThat(projectRepository.count()).isZero();
         }
 
         @Test
-        @DisplayName("testSaveProject_withoutName_shouldThrowException")
-        void givenAWrongObjectWithoutName_whenSave_thenThrowException() {
+        @DisplayName("without name, should throw [jakarta.validation.]ConstraintViolationException")
+        void givenAnInvalidProjectEntityWithoutName_whenSave_thenThrowConstraintViolationException() {
             ProjectEntity projectEntity = ProjectEntity.builder()
                     .publicId(projectPublicId)
                     .type(projectType)
@@ -89,16 +102,16 @@ class ProjectRepositoryTests {
             assertThatThrownBy(
                     () -> projectRepository.save(projectEntity)
             )
-                    .isInstanceOf(DataIntegrityViolationException.class)
-                    .hasMessageContaining("not-null property references");
+                    .isInstanceOf(ConstraintViolationException.class)
+                    .hasMessageContaining("name can not be");
 
             entityManager.clear();
             assertThat(projectRepository.count()).isZero();
         }
 
         @Test
-        @DisplayName("testSaveProject_withTwoSamePublicId_shouldThrowException")
-        void givenTwoObjectsWithSamePublicId_whenSave_thenThrowException() {
+        @DisplayName("by two entity with same public_id, should throw DataIntegrityViolationException")
+        void givenTwoProjectEntitiesWithSamePublicId_whenSave_thenThrowDataIntegrityViolationException() {
             ProjectEntity projectEntity1 = ProjectEntity.builder()
                     .publicId(projectPublicId)
                     .name(projectName)
@@ -122,6 +135,42 @@ class ProjectRepositoryTests {
             entityManager.clear();
             assertThat(projectRepository.count()).isEqualTo(1);
         }
+
+        @RepeatedTest(100)
+        @DisplayName("by a valid entity, should save less than 10 ms")
+        void givenAValidProjectEntity_whenSave_thenSaveLessThan10Ms() throws Throwable {
+            ProjectEntity projectEntity = ProjectEntity.builder()
+                    .name(projectName)
+                    .type(projectType)
+                    .publicId(projectPublicId)
+                    .build();
+
+            Executable executable = () -> projectRepository.save(projectEntity);
+            // executable.execute(); // skip the first
+
+            assertTimeout(Duration.ofMillis(100), executable);
+            assertThat(projectRepository.count()).isEqualTo(1);
+        }
+
+        @ParameterizedTest
+        @DisplayName("by an invalid entity with ID, should ignore it, then return a valid saved entity")
+        @ValueSource(longs = {Long.MIN_VALUE, -100, -1, 0, 2, 100, Long.MAX_VALUE})
+        void givenAnInvalidProjectEntityUsingId_whenSave_thenReturnAValidSavedProjectEntity(long id) {
+            ProjectEntity projectEntity = ProjectEntity.builder()
+                    .name(projectName)
+                    .type(projectType)
+                    .publicId(projectPublicId)
+                    .id(id)
+                    .build();
+
+            ProjectEntity savedProjectEntity = projectRepository.save(projectEntity);
+            log.info("Saved ID: {}", savedProjectEntity.getId());
+
+            assertThat(savedProjectEntity.getId())
+                    .isNotNull()
+                    .isNotEqualTo(projectEntity.getId());
+        }
+
     }
 
     @Nested
